@@ -1,6 +1,3 @@
-use std::hashmap::HashSet;
-use sudoku::Sudoku;
-
 /*
 
 Implements methods to detect numbers which can only be in one field
@@ -22,6 +19,9 @@ The coordinate (9, 1) is allowed to have all numbers from 3 to 9,
 but it is the only field in which the number 6 can be.
 
 */
+
+use std::hashmap::HashSet;
+use sudoku::Sudoku;
 
 impl ::sudoku::Sudoku {
 	// Detect 

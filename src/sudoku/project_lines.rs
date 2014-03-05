@@ -1,6 +1,3 @@
-use std::hashmap::HashSet;
-use sudoku::Sudoku;
-
 /*
 
 Implements methods to detect lines of empty fields that are guaranteed to contain
@@ -17,8 +14,13 @@ will become
 ---|123|456
 6--|---|---
 ---|---|---
-
+	^^^
+	In one of those there must be a 6
+	
 */
+
+use std::hashmap::HashSet;
+use sudoku::Sudoku;
 
 impl ::sudoku::Sudoku {
 	// Checks each square to see if it contains any lines that can be projected

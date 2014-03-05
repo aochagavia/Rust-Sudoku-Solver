@@ -1,5 +1,3 @@
-use sudoku::Sudoku;
-
 /*
 
 Implements a brute force algorithm to solve the sudoku when the
@@ -15,6 +13,8 @@ The steps are the following:
 4- If we get back to the first field and we cannot assign it a valid number, the sudoku is not valid
 
 */
+
+use sudoku::Sudoku;
 
 struct Point { x: int, y: int }
 

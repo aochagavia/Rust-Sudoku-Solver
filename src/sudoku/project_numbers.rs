@@ -1,5 +1,3 @@
-use sudoku::Sudoku;
-
 /*
 
 Implements methods to project each field
@@ -30,6 +28,8 @@ will become
 789|
 
 */
+
+use sudoku::Sudoku;
 
 impl ::sudoku::Sudoku {
 	// Projects all fields that are not empty and haven't yet been projected

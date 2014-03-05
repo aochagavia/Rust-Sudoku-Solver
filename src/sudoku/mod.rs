@@ -1,3 +1,12 @@
+/*
+
+Implements the Sudoku and Field structs, with the functionality to solve a sudoku.
+
+There is a fast_solve method used to solve the sudoku without brute forcing it. If
+it fails, you can use the brute_force method defined in brute_force.rs
+
+*/
+
 use std::iter::Repeat;
 use std::io::buffered::BufferedReader;
 use std::hashmap::HashSet;
@@ -18,7 +27,7 @@ impl Sudoku {
 		let column = Repeat::new(Field::new()).take(9).to_owned_vec();
 		let mut rows = Repeat::new(column).take(9).to_owned_vec();
 		
-		// Read a row per line in the reader
+		// Read a row per line
 		for y in range(0, 9) {
 			let line = reader.read_line().unwrap_or(~"");
 			let numbers = line.trim_right().chars().to_owned_vec();
@@ -36,7 +45,7 @@ impl Sudoku {
 			}
 		}
 		
-		return Sudoku { fields: rows };
+		Sudoku { fields: rows }
 	}
 	
 	// Attempts to solve the sudoku without brute forcing it
@@ -114,7 +123,7 @@ impl ToStr for Sudoku {
 }
 
 
-// Field
+// This is the basic unit of the sudoku
 struct Field {
 	possible_numbers: HashSet<int>,
 	projected: bool
