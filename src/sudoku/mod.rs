@@ -151,7 +151,8 @@ impl Field {
 	}
 	
 	// Removes a possibility from the field and returns true if it was contained
-	fn remove_possibility(&mut self, x: int) -> bool {
+	fn cannot_be(&mut self, x: int) -> bool {
+		// If there is only one possibility, it cannot be removed
 		if self.possible_numbers.len() == 1 {
 			return false;
 		}

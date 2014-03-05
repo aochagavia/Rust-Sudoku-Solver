@@ -121,7 +121,7 @@ impl ::sudoku::Sudoku {
 		for x in range(0, 9) {
 			// Do not project to same squre
 			if x < cornerX || cornerX + 3 <= x {
-				progress = self.fields[x][y].remove_possibility(projected_number) || progress;
+				progress = self.fields[x][y].cannot_be(projected_number) || progress;
 			}
 		}
 		
@@ -134,7 +134,7 @@ impl ::sudoku::Sudoku {
 		for y in range(0, 9) {
 			// Do not project to same square
 			if y < cornerY || cornerY + 3 <= y {
-				progress = self.fields[x][y].remove_possibility(projected_number) || progress;
+				progress = self.fields[x][y].cannot_be(projected_number) || progress;
 			}
 		}
 		
