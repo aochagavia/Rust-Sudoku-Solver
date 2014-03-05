@@ -53,7 +53,7 @@ impl ::sudoku::Sudoku {
 				self.fields[x][y].set_number(number + 1);
 			}
 			
-			// If the condition is not broken, solve the next field
+			// If the condition is not broken, assign the next field
 			// If it is broken, continue with the loop and test the next available number
 			if self.is_valid(x, y)
 			&& self.assign_field(current + 1, empty_fields) {
@@ -62,10 +62,12 @@ impl ::sudoku::Sudoku {
 		}
 	}
 	
+	// Check that the number in the given coordinates does not break
+	// the sudoku condition
 	fn is_valid(&mut self, x: int, y: int) -> bool {
 		let number = self.fields[x][y].get_number();
 	
-		// Check that the number is not repeated in the horizontal line
+		// Check horizontal line
 		for i in range(0, 9) {
 			if i != x
 			&& self.fields[i][y].number_found()
@@ -74,7 +76,7 @@ impl ::sudoku::Sudoku {
 			}
 		}
 		
-		// Check that it is not repeated in the vertical line
+		// Check vertical line
 		for i in range(0, 9) {
 			if i != y
 			&& self.fields[x][i].number_found()
@@ -83,7 +85,7 @@ impl ::sudoku::Sudoku {
 			}
 		}
 		
-		// Check that it is not repeated in the square
+		// Check square
 		let (cornerX, cornerY) = Sudoku::get_corner(x, y);
 		for offX in range(0, 3) {
 			for offY in range(0, 3) {
