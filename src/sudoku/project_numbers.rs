@@ -50,31 +50,31 @@ impl ::sudoku::Sudoku {
 	// Will return true if we make progress so we can know if we are stuck
 	pub fn project_number(&mut self, x: int, y: int) -> bool {
 		self.fields[x][y].projected = true;
-		return self.project_h_line(x, y)
-			| self.project_v_line(x, y)
-			| self.project_square(x, y);
+		self.project_h(x, y)
+			| self.project_v(x, y)
+			| self.project_square(x, y)
 	}
 	
 	// Project the number in its horizontal line
-	fn project_h_line(&mut self, x: int, y: int) -> bool {
+	fn project_h(&mut self, x: int, y: int) -> bool {
 		let num = self.fields[x][y].get_number();
 		let mut progress = false;
 		for i in range(0, 9) {
 			progress = self.fields[i][y].cannot_be(num) || progress;
 		}
 		
-		return progress;
+		progress
 	}
 	
 	// Project the number in its vertical line
-	fn project_v_line(&mut self, x: int, y: int) -> bool {
+	fn project_v(&mut self, x: int, y: int) -> bool {
 		let num = self.fields[x][y].get_number();
 		let mut progress = false;
 		for i in range(0, 9) {
 			progress = self.fields[x][i].cannot_be(num) || progress;
 		}
 		
-		return progress;
+		progress
 	}
 	
 	// Project the number in its square
@@ -89,6 +89,6 @@ impl ::sudoku::Sudoku {
 			}
 		}
 		
-		return progress;
+		progress
 	}
 }

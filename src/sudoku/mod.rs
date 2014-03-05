@@ -109,7 +109,7 @@ impl ToStr for Sudoku {
 			string.push_str("\n");
 		}
 	
-		return string;
+		string
 	}
 }
 
@@ -132,7 +132,7 @@ impl Field {
 
 	// Returns true if a number has been found
 	fn number_found(&self) -> bool {
-		return self.possible_numbers.len() == 1;
+		self.possible_numbers.len() == 1
 	}
 	
 	// Sets the number of the current field
@@ -159,7 +159,8 @@ impl Field {
 		
 		let contains = self.possible_numbers.contains(&x);
 		self.possible_numbers.remove(&x);
-		return contains;
+		
+		contains
 	}
 	
 	// Resets the possibilities to their default range
