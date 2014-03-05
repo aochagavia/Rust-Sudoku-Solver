@@ -1,3 +1,11 @@
+/*
+
+Simple sudoku solver in Rust
+
+For details on the implementation of the Sudoku look at sudoku/mod.rs
+
+*/
+
 use std::io::{File, io_error};
 use std::io::buffered::BufferedReader;
 use std::os;
@@ -26,6 +34,7 @@ fn main() {
 		let file = File::open(&path);
 		let mut sudoku = Sudoku::new(BufferedReader::new(file.unwrap()));
 		
+		// Apply brute force directly if "-b" is specified as argument
 		if args.len() > 2 && args[2] == ~"-b" {
 			println("Brute forcing...");
 			sudoku.brute_force();

@@ -5,6 +5,9 @@ Implements the Sudoku and Field structs, with the functionality to solve a sudok
 There is a fast_solve method used to solve the sudoku without brute forcing it. If
 it fails, you can use the brute_force method defined in brute_force.rs
 
+For details about how the algorithm works, take a look at project_numbers.rs,
+detect_uniques.rs, project_lines.rs and brute_force.rs
+
 */
 
 use std::iter::Repeat;
