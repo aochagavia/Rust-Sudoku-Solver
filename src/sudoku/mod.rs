@@ -72,27 +72,8 @@ impl Sudoku {
 	
 	// Returns the top-left corner of the square in which the given point is
 	pub fn get_corner(x: int, y: int) -> (int, int) {
-		match ((x, y)) {
-			(a, b) if a < 3 && b < 3 => { (0, 0) }
-
-			(a, b) if 3 <= a && a < 6 && b < 3 => { (3, 0)	}
-			
-			(a, b) if 6 <= a && b < 3 => { (6, 0) }
-			
-			(a, b) if a < 3 && 3 <= b && b < 6 => { (0, 3) }
-			
-			(a, b) if a < 3 && 6 <= b => { (0, 6) }
-			
-			(a, b) if 3 <= a && a < 6 && 3 <= b && b < 6 => { (3, 3) }
-			
-			(a, b) if 3 <= a && a < 6 && 6 <= b => { (3, 6) }
-			
-			(a, b) if 6 <= a && 3 <= b && b < 6 => { (6, 3) }
-			
-			(a, b) if 6 <= a && 6 <= b => { (6, 6) }
-			
-			(_, _) => { fail!("Corner of {}, {} could not be found", x, y) }
-		}
+		assert!(0 <= x && x < 9 && 0 <= y && y < 9);
+		((x / 3) * 3, (y / 3) * 3)
 	}
 }
 
