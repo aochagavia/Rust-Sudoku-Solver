@@ -16,7 +16,8 @@ The steps are the following:
 
 use sudoku::Sudoku;
 
-struct Point { x: int, y: int }
+struct Point(int, int);
+//struct Point { x: int, y: int }
 
 impl ::sudoku::Sudoku {
 	// Attempts to brute force the sudoku.
@@ -36,7 +37,7 @@ impl ::sudoku::Sudoku {
 			return true;
 		}
 	
-		let (x, y) = (empty_fields[current].x, empty_fields[current].y);
+		let Point(x, y) = empty_fields[current];
 	
 		loop {
 			// Give the field the next value available
@@ -106,7 +107,7 @@ impl ::sudoku::Sudoku {
 		for x in range(0, 9) {
 			for y in range(0, 9) {
 				if !self.fields[x][y].number_found() {
-					points.push(Point{ x: x, y: y });
+					points.push(Point(x, y));
 				}
 			}
 		}
