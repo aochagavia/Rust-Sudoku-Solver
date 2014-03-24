@@ -14,6 +14,7 @@ The steps are the following:
 
 */
 
+use std::vec::VecIterator;
 use sudoku::Sudoku;
 
 struct Point(int, int);
@@ -27,40 +28,29 @@ impl ::sudoku::Sudoku {
 		let empty_fields = self.get_empty_fields();
 		
 		// Assign numbers to them recursively
-		self.assign_field(0, empty_fields)
+		self.assign_field(empty_fields.iter())
 	}
 	
 	// Recursive function to brute force the empty fields
-	fn assign_field(&mut self, current: uint, empty_fields: &[Point]) -> bool {
-		// If the current field is out of bounds, the sudoku is completed
-		if current == empty_fields.len() {
-			return true;
-		}
+	fn assign_field(&mut self, mut empty_fields: VecIterator<Point>) -> bool {
+		// If all empty fields are assigned without errors, the sudoku is completed
+        let x; let y;
+        match empty_fields.next() {
+            Some(&Point(field_x, field_y)) => { x = field_x; y = field_y; }
+            None => { return true }
+        }
 	
-		let Point(x, y) = empty_fields[current];
-	
-		loop {
-			// Give the field the next value available
-			if !self.fields[x][y].number_found() {
-				self.fields[x][y].set_number(1);
-			} else {
-				// 9 is the last number available
-				if self.fields[x][y].get_number() == 9 {
-					self.fields[x][y].reset_possibilities();
-					return false;
-				}
-				
-				let number = self.fields[x][y].get_number();
-				self.fields[x][y].set_number(number + 1);
-			}
-			
-			// If the condition is not broken, assign the next field
-			// If it is broken, continue with the loop and test the next available number
-			if self.is_valid(x, y)
-			&& self.assign_field(current + 1, empty_fields) {
-				return true;
-			}
+        // set_next_number will return false when there is no number left to be assigned
+		while self.fields[x][y].set_next_number() {
+            // If the condition is not broken, assign the next field
+            // If it is broken, test with the next available number
+            if self.is_valid(x, y)
+            && self.assign_field(empty_fields) {
+                return true;
+            }
 		}
+        
+        false
 	}
 	
 	// Check that the number in the given coordinates does not break

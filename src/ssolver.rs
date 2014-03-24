@@ -47,13 +47,15 @@ fn main() {
 			println("No solution found with fast method, attempting brute force...");
 			if !sudoku.brute_force() {
 				println("Brute force failed, make sure that the sudoku is valid.");
+                println("Current solution: ");
 			}
 		}
 		
 		// Maybe it is now completed
 		if sudoku.is_completed() {
 			println!("A solution for \"{}\" has been found!", path_str);
-			println!("\n{}", sudoku.to_str());
 		}
+        
+        println!("\n{}", sudoku.to_str());
 	});
 }
