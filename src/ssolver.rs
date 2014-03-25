@@ -47,7 +47,7 @@ fn main() {
 			println("No solution found with fast method, attempting brute force...");
 			if !sudoku.brute_force() {
 				println("Brute force failed, make sure that the sudoku is valid.");
-                println("Current solution: ");
+                println("Current solution (for debugging purposes): ");
 			}
 		}
 		

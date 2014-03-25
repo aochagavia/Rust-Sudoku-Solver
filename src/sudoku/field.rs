@@ -1,3 +1,14 @@
+/*
+
+Implements the Field struct.
+
+Fields are the blocks upon which a sudoku is built. They have a set of
+"possible numbers", which are the values that a field could have. There is
+also the "projected" value, which indicates if the field has already been projected
+according to the algorithm in project_numbers.rs
+
+*/
+
 use std::hashmap::HashSet;
 
 // This is the basic unit of the sudoku

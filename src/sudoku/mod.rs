@@ -1,6 +1,6 @@
 /*
 
-Implements the Sudoku and Field structs, with the functionality to solve a sudoku.
+Implements the Sudoku struct, with the functionality to solve a sudoku.
 
 There is a fast_solve method used to solve the sudoku without brute forcing it. If
 it fails, you can use the brute_force method defined in brute_force.rs
