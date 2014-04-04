@@ -1,12 +1,12 @@
 Rust-Sudoku-Solver
 ==================
 
-A basic application to solve sudokus using the Rust programming language v0.9.
+A basic application to solve sudokus using the Rust programming language v0.10.
 
 
 ##Why?
 
-Because I needed an excuse to program something in Rust, and I had curiosity to know if I could make a non-bruteforcing algorithm to solve a sudoku.
+Because I needed an excuse to program something in Rust, and I was curious about if I could make a non-bruteforcing algorithm to solve a sudoku.
 
 
 ##How does it work?
@@ -14,7 +14,7 @@ Because I needed an excuse to program something in Rust, and I had curiosity to 
 ###Algorithm
 
 It tries first applying a fast_solve algorithm, which for most sudokus is enough.
-If this does not succeed, then the program proceeds with brute forcing it.
+If this does not succeed, then the program proceeds with brute forcing.
 
 Detailed description is provided as comments at the beginning of each source file inside "src/sudoku".
 

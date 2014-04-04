@@ -19,8 +19,8 @@ will become
 	
 */
 
-use std::hashmap::HashSet;
 use sudoku::Sudoku;
+use collections::HashSet;
 
 impl ::sudoku::Sudoku {
 	// Checks each square to see if it contains any lines that can be projected
@@ -43,16 +43,16 @@ impl ::sudoku::Sudoku {
 	
 		// Horizontal lines
 		for y in range(0, 3) {
-			let found_numbers = self.get_h_difference(cornerX, y);
-			for &num in found_numbers.iter() {
+            let diff = self.get_h_difference(cornerX, y);
+			for &num in diff.iter() {
 				progress = self.project_h_line(cornerX, y, num) || progress;
 			}
 		}
 
 		// Vertical lines
 		for x in range(0, 3) {
-			let found_numbers = self.get_v_difference(x, cornerY);
-			for &num in found_numbers.iter() {
+			let diff = self.get_v_difference(x, cornerY);
+			for &num in diff.iter() {
 				progress = self.project_v_line(x, cornerY, num) || progress;
 			}
 		}
@@ -62,7 +62,7 @@ impl ::sudoku::Sudoku {
 	
 	// Get the set of possible numbers in the given horizontal line, within the square
 	// and take the difference with the rest of the square
-	fn get_h_difference(&mut self, cornerX: int, y: int) -> ~[int] {		
+	fn get_h_difference(&mut self, cornerX: int, y: int) -> Vec<int> {		
 		// Set of possible numbers in given line
 		let mut possible_numbers = HashSet::<int>::new();
 		for i in range(0, 3) {
@@ -85,10 +85,10 @@ impl ::sudoku::Sudoku {
 			}
 		}
 		
-		possible_numbers.difference(&other_numbers).map(|i| i.clone()).to_owned_vec()
+		possible_numbers.difference(&other_numbers).map(|&x| x).collect::<Vec<int>>()
 	}
 	
-	fn get_v_difference(&mut self, x: int, cornerY: int) -> ~[int] {
+	fn get_v_difference(&mut self, x: int, cornerY: int) -> Vec<int> {
 		// Set of possible numbers in given line
 		let mut possible_numbers = HashSet::<int>::new();
 		for i in range(0, 3) {
@@ -112,7 +112,7 @@ impl ::sudoku::Sudoku {
 		}
 		
 		// Difference
-		possible_numbers.difference(&other_numbers).map(|i| i.clone()).to_owned_vec()
+		possible_numbers.difference(&other_numbers).map(|&x| x).collect::<Vec<int>>()
 	}
 	
 	// Project a number horizontally to other squares

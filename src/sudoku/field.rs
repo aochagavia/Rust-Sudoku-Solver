@@ -9,7 +9,7 @@ according to the algorithm in project_numbers.rs
 
 */
 
-use std::hashmap::HashSet;
+use collections::HashSet;
 
 // This is the basic unit of the sudoku
 pub struct Field {
@@ -19,11 +19,7 @@ pub struct Field {
 
 impl Field {
 	pub fn new() -> Field {
-		let mut set = HashSet::new();
-		for i in range(1, 10) {
-			set.insert(i);
-		}
-		
+		let set = range(1, 10).collect::<HashSet<int>>();
 		Field { projected: false, possible_numbers: set }
 	}
 
@@ -41,8 +37,9 @@ impl Field {
 	// Gets the number of the current field, if any
 	// Fails if there is more than one possibility
 	pub fn get_number(&self) -> int {
-		match self.possible_numbers.iter().to_owned_vec() {
-			[a] => { *a }
+        let mut it = self.possible_numbers.iter();
+		match (it.next(), it.next()) {
+			(Some(x), None) => { *x }
 			_ => { fail!("Called get_number(), but there are many possible numbers") }
 		}
 	}
@@ -63,9 +60,7 @@ impl Field {
 	// Resets the possibilities to their default range [1, 9]
 	pub fn reset_possibilities(&mut self) {
 		self.possible_numbers.clear();
-		for i in range(1,10) {
-			self.possible_numbers.insert(i);
-		}
+        range(1,10).map(|x| self.possible_numbers.insert(x));
 	}
     
     // Give the field the next value available
@@ -84,7 +79,7 @@ impl Field {
             self.set_number(number + 1);
         }
         
-        return true;
+        true
     }
 }
 

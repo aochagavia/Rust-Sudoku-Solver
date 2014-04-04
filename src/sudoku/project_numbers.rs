@@ -38,7 +38,7 @@ impl ::sudoku::Sudoku {
 		
 		for x in range(0, 9) {
 			for y in range(0, 9) {
-				if (!self.fields[x][y].projected && self.fields[x][y].number_found()) {
+				if !self.fields[x][y].projected && self.fields[x][y].number_found() {
 					progress = self.project_number(x, y) || progress;
 				}
 			}
@@ -50,9 +50,7 @@ impl ::sudoku::Sudoku {
 	// Will return true if we make progress so we can know if we are stuck
 	pub fn project_number(&mut self, x: int, y: int) -> bool {
 		self.fields[x][y].projected = true;
-		self.project_h(x, y)
-			| self.project_v(x, y)
-			| self.project_square(x, y)
+		self.project_h(x, y) | self.project_v(x, y) | self.project_square(x, y)
 	}
 	
 	// Project the number in its horizontal line

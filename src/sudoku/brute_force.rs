@@ -14,17 +14,16 @@ The steps are the following:
 
 */
 
-use std::vec::VecIterator;
 use sudoku::Sudoku;
+use std::slice::Items;
 
 struct Point(int, int);
-//struct Point { x: int, y: int }
 
 impl ::sudoku::Sudoku {
 	// Attempts to brute force the sudoku.
 	// Returns true if it works and false if not.
 	pub fn brute_force(&mut self) -> bool {
-		// Get the coordinates of the empty fields
+		// Get a vector of tuples containing the coordinates of each empty field
 		let empty_fields = self.get_empty_fields();
 		
 		// Assign numbers to them recursively
@@ -32,7 +31,7 @@ impl ::sudoku::Sudoku {
 	}
 	
 	// Recursive function to brute force the empty fields
-	fn assign_field(&mut self, mut empty_fields: VecIterator<Point>) -> bool {
+	fn assign_field(&mut self, mut empty_fields: Items<Point>) -> bool {
 		// If all empty fields are assigned without errors, the sudoku is completed
         let x; let y;
         match empty_fields.next() {
@@ -94,6 +93,7 @@ impl ::sudoku::Sudoku {
 	
 	fn get_empty_fields(&mut self) -> ~[Point] {
 		let mut points: ~[Point] = ~[];
+        
 		for x in range(0, 9) {
 			for y in range(0, 9) {
 				if !self.fields[x][y].number_found() {
