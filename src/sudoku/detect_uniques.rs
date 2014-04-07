@@ -74,9 +74,7 @@ impl ::sudoku::Sudoku {
 		let mut other_numbers = HashSet::<int>::new();
 		for offY in range(0, 9) {
 			if offY != y {
-				for &num in self.fields[x][offY].possible_numbers.iter() {
-					other_numbers.insert(num);
-				}
+                other_numbers.extend(self.fields[x][offY].possible_numbers.iter().map(|&n| n))
 			}
 		}
 		
@@ -89,9 +87,7 @@ impl ::sudoku::Sudoku {
 		let mut other_numbers = HashSet::<int>::new();
 		for offX in range(0, 9) {
 			if offX != x {
-				for &num in self.fields[offX][y].possible_numbers.iter() {
-					other_numbers.insert(num);
-				}
+                other_numbers.extend(self.fields[offX][y].possible_numbers.iter().map(|&n| n));
 			}
 		}
 	
@@ -107,9 +103,7 @@ impl ::sudoku::Sudoku {
 			for offY in range(0, 3) {
 				// Push only the values of the other fields
 				if cornerX + offX != x || cornerY + offY != y {
-					for &num in self.fields[cornerX + offX][cornerY + offY].possible_numbers.iter() {
-						other_numbers.insert(num);
-					}
+                    other_numbers.extend(self.fields[cornerX + offX][cornerY + offY].possible_numbers.iter().map(|&n| n));
 				}
 			}
 		}

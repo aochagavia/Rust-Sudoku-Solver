@@ -12,6 +12,7 @@ according to the algorithm in project_numbers.rs
 use collections::HashSet;
 
 // This is the basic unit of the sudoku
+#[deriving(Clone)]
 pub struct Field {
 	possible_numbers: HashSet<int>,
 	projected: bool
@@ -60,7 +61,7 @@ impl Field {
 	// Resets the possibilities to their default range [1, 9]
 	pub fn reset_possibilities(&mut self) {
 		self.possible_numbers.clear();
-        range(1,10).map(|x| self.possible_numbers.insert(x));
+        self.possible_numbers.extend(range(1,10));
 	}
     
     // Give the field the next value available
@@ -81,10 +82,4 @@ impl Field {
         
         true
     }
-}
-
-impl Clone for Field {
-	fn clone(&self) -> Field {
-		Field { projected: self.projected, possible_numbers: self.possible_numbers.clone() }
-	}
 }

@@ -66,9 +66,7 @@ impl ::sudoku::Sudoku {
 		// Set of possible numbers in given line
 		let mut possible_numbers = HashSet::<int>::new();
 		for i in range(0, 3) {
-			for &num in self.fields[cornerX + i][y].possible_numbers.iter() {
-				possible_numbers.insert(num);
-			}
+            possible_numbers.extend(self.fields[cornerX + i][y].possible_numbers.iter().map(|&n| n));
 		}
 		
 		// Set of possible numbers in the rest of the square
@@ -78,9 +76,7 @@ impl ::sudoku::Sudoku {
 			// Discard numbers in the row Y
 			if cornerY + offY != y {
 				for offX in range(0, 3) {
-					for &num in self.fields[cornerX + offX][cornerY + offY].possible_numbers.iter() {
-						other_numbers.insert(num);
-					}
+                    other_numbers.extend(self.fields[cornerX + offX][cornerY + offY].possible_numbers.iter().map(|&n| n));
 				}
 			}
 		}
@@ -92,9 +88,7 @@ impl ::sudoku::Sudoku {
 		// Set of possible numbers in given line
 		let mut possible_numbers = HashSet::<int>::new();
 		for i in range(0, 3) {
-			for &num in self.fields[x][cornerY + i].possible_numbers.iter() {
-				possible_numbers.insert(num);
-			}
+            possible_numbers.extend(self.fields[x][cornerY + i].possible_numbers.iter().map(|&n| n));
 		}
 		
 		// Set of possible numbers in the rest of the square
@@ -104,9 +98,7 @@ impl ::sudoku::Sudoku {
 			// Discard numbers in the column X
 			if cornerX + offX != x {
 				for offY in range(0, 3) {
-					for &num in self.fields[cornerX + offX][cornerY + offY].possible_numbers.iter() {
-						other_numbers.insert(num);
-					}
+                    other_numbers.extend(self.fields[cornerX + offX][cornerY + offY].possible_numbers.iter().map(|&n| n));
 				}
 			}
 		}

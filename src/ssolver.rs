@@ -27,7 +27,7 @@ fn main() {
 		return;
 	}
 	
-	let path_str = args[1].clone();
+	let path_str = &args[1];
 	let path = Path::new(path_str.clone());
 	
     let file = File::open(&path).unwrap();
