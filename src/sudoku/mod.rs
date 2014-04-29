@@ -33,7 +33,7 @@ impl Sudoku {
 		let mut rows = Vec::from_fn(9, |_| column.clone()).move_iter().collect::<~[~[Field]]>();
 		
 		// Read a row per line
-		for y in range(0, 9) {
+		for y in range(0u, 9) {
 			let line = reader.read_line().ok().unwrap_or(~"");
 			let numbers = line.trim_right().chars().collect::<~[char]>();
 			
@@ -42,8 +42,8 @@ impl Sudoku {
 			}
 			
 			// Values that cannot be parsed are interpreted as empty fields
-			for x in range(0, 9) {
-				let parsed = from_str::<int>(numbers[x].to_str());
+			for x in range(0u, 9) {
+				let parsed = from_str::<uint>(numbers[x].to_str());
 				if parsed.is_some() {
 					rows[x][y].set_number(parsed.unwrap());
 				}
@@ -73,27 +73,27 @@ impl Sudoku {
 	}
 	
 	// Returns the top-left corner of the square in which the given point is
-	pub fn get_corner(x: int, y: int) -> (int, int) {
-		assert!(0 <= x && x < 9 && 0 <= y && y < 9);
+	pub fn get_corner(x: uint, y: uint) -> (uint, uint) {
+		assert!(x < 9 && y < 9);
 		((x / 3) * 3, (y / 3) * 3)
 	}
 }
 
 impl Show for Sudoku {
 	fn fmt(&self, f: &mut Formatter) -> Result {
-		let mut string = ~"";
+		let mut buf = StrBuf::new();
         
-		for y in range(0, 9) {
+		for y in range(0u, 9) {
 			if y == 3 || y == 6 {
-				string.push_str("-".repeat(12));
-				string.push_str("\n");
+				buf.push_str("-".repeat(12));
+				buf.push_str("\n");
 			}
-			for x in range(0, 9) {
+			for x in range(0u, 9) {
 				if x == 3 || x == 6 {
-					string.push_char('|');
+					buf.push_char('|');
 				}
 			
-				string.push_str(
+				buf.push_str(
 				if self.fields[x][y].number_found() {
 					self.fields[x][y].get_number().to_str()
 				} else {
@@ -101,9 +101,9 @@ impl Show for Sudoku {
 				});
 			}
 			
-			string.push_str("\n");
+			buf.push_str("\n");
 		}
 	
-        f.pad(string)
+        f.pad(buf.as_slice())
 	}
 }

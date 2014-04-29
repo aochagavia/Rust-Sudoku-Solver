@@ -1,7 +1,7 @@
 Rust-Sudoku-Solver
 ==================
 
-A basic application to solve sudokus using the Rust programming language v0.10.
+A basic application to solve sudokus using the Rust programming language 0.11-pre.
 
 
 ##Why?

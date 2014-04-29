@@ -17,7 +17,7 @@ The steps are the following:
 use sudoku::Sudoku;
 use std::slice::Items;
 
-struct Point(int, int);
+struct Point(uint, uint);
 
 impl ::sudoku::Sudoku {
 	// Attempts to brute force the sudoku.
@@ -54,11 +54,11 @@ impl ::sudoku::Sudoku {
 	
 	// Check that the number in the given coordinates does not break
 	// the sudoku condition
-	fn is_valid(&mut self, x: int, y: int) -> bool {
+	fn is_valid(&mut self, x: uint, y: uint) -> bool {
 		let number = self.fields[x][y].get_number();
 	
 		// Check horizontal line
-		for i in range(0, 9) {
+		for i in range(0u, 9) {
 			if i != x
 			&& self.fields[i][y].number_found()
 			&& self.fields[i][y].get_number() == number {
@@ -67,7 +67,7 @@ impl ::sudoku::Sudoku {
 		}
 		
 		// Check vertical line
-		for i in range(0, 9) {
+		for i in range(0u, 9) {
 			if i != y
 			&& self.fields[x][i].number_found()
 			&& self.fields[x][i].get_number() == number {
@@ -77,8 +77,8 @@ impl ::sudoku::Sudoku {
 		
 		// Check square
 		let (cornerX, cornerY) = Sudoku::get_corner(x, y);
-		for offX in range(0, 3) {
-			for offY in range(0, 3) {
+		for offX in range(0u, 3) {
+			for offY in range(0u, 3) {
 				if cornerX + offX != x || cornerY + offY != y {
 					if self.fields[cornerX + offX][cornerY + offY].number_found()
 					&& self.fields[cornerX + offX][cornerY + offY].get_number() == number {
@@ -91,11 +91,11 @@ impl ::sudoku::Sudoku {
 		true
 	}
 	
-	fn get_empty_fields(&mut self) -> ~[Point] {
-		let mut points: ~[Point] = ~[];
+	fn get_empty_fields(&mut self) -> Vec<Point> {
+		let mut points = vec!();
         
-		for x in range(0, 9) {
-			for y in range(0, 9) {
+		for x in range(0u, 9) {
+			for y in range(0u, 9) {
 				if !self.fields[x][y].number_found() {
 					points.push(Point(x, y));
 				}
