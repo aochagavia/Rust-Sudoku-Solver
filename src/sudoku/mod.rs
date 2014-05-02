@@ -21,6 +21,7 @@ mod project_lines;
 mod brute_force;
 
 // Sudoku
+#[deriving(Clone)]
 pub struct Sudoku {
 	fields: ~[~[Field]]
 }
