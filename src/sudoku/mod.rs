@@ -35,7 +35,7 @@ impl Sudoku {
 		
 		// Read a row per line
 		for y in range(0u, 9) {
-			let line = reader.read_line().ok().unwrap_or(~"");
+			let line = reader.read_line().ok().unwrap_or("".to_owned());
 			let numbers = line.trim_right().chars().collect::<~[char]>();
 			
 			if numbers.len() < 9 {
@@ -98,7 +98,7 @@ impl Show for Sudoku {
 				if self.fields[x][y].number_found() {
 					self.fields[x][y].get_number().to_str()
 				} else {
-					~" "
+					" ".to_owned()
 				});
 			}
 			

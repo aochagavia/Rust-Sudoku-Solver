@@ -33,7 +33,7 @@ fn main() {
     let mut sudoku = Sudoku::new(BufferedReader::new(file));
     
     // Apply brute force directly if "-b" is specified as argument
-    if args.len() > 2 && args[2] == ~"-b" {
+    if args.len() > 2 && args[2] == "-b".to_owned() {
         println!("Brute forcing...");
         sudoku.brute_force();
     } else {
