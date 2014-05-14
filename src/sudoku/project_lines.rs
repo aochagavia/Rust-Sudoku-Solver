@@ -66,7 +66,7 @@ impl ::sudoku::Sudoku {
 		// Set of possible numbers in given line
 		let mut possible_numbers = HashSet::<uint>::new();
 		for i in range(0u, 3) {
-            possible_numbers.extend(self.fields[cornerX + i][y].possible_numbers.iter().map(|&n| n));
+            possible_numbers.extend(self.get(cornerX + i, y).possible_numbers.iter().map(|&n| n));
 		}
 		
 		// Set of possible numbers in the rest of the square
@@ -76,7 +76,7 @@ impl ::sudoku::Sudoku {
 			// Discard numbers in the row Y
 			if cornerY + offY != y {
 				for offX in range(0u, 3) {
-                    other_numbers.extend(self.fields[cornerX + offX][cornerY + offY].possible_numbers.iter().map(|&n| n));
+                    other_numbers.extend(self.get(cornerX + offX, cornerY + offY).possible_numbers.iter().map(|&n| n));
 				}
 			}
 		}
@@ -88,7 +88,7 @@ impl ::sudoku::Sudoku {
 		// Set of possible numbers in given line
 		let mut possible_numbers = HashSet::new();
 		for i in range(0u, 3) {
-            possible_numbers.extend(self.fields[x][cornerY + i].possible_numbers.iter().map(|&n| n));
+            possible_numbers.extend(self.get(x, cornerY + i).possible_numbers.iter().map(|&n| n));
 		}
 		
 		// Set of possible numbers in the rest of the square
@@ -98,7 +98,7 @@ impl ::sudoku::Sudoku {
 			// Discard numbers in the column X
 			if cornerX + offX != x {
 				for offY in range(0u, 3) {
-                    other_numbers.extend(self.fields[cornerX + offX][cornerY + offY].possible_numbers.iter().map(|&n| n));
+                    other_numbers.extend(self.get(cornerX + offX, cornerY + offY).possible_numbers.iter().map(|&n| n));
 				}
 			}
 		}
@@ -114,7 +114,7 @@ impl ::sudoku::Sudoku {
 		for x in range(0u, 9) {
 			// Do not project to same squre
 			if x < cornerX || cornerX + 3 <= x {
-				progress = self.fields[x][y].cannot_be(projected_number) || progress;
+				progress = self.get_mut(x, y).cannot_be(projected_number) || progress;
 			}
 		}
 		
@@ -128,7 +128,7 @@ impl ::sudoku::Sudoku {
 		for y in range(0u, 9) {
 			// Do not project to same square
 			if y < cornerY || cornerY + 3 <= y {
-				progress = self.fields[x][y].cannot_be(projected_number) || progress;
+				progress = self.get_mut(x, y).cannot_be(projected_number) || progress;
 			}
 		}
 		

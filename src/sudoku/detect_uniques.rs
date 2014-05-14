@@ -31,11 +31,11 @@ impl ::sudoku::Sudoku {
 		for x in range(0u, 9) {
 			for y in range(0u, 9) {
 				// Discard the field if we have already found a number for it
-				if self.fields[x][y].number_found() {
+				if self.get(x, y).number_found() {
 					continue;
 				}
 				
-				let possible_numbers = self.fields[x][y].possible_numbers.clone();
+				let possible_numbers = self.get(x, y).possible_numbers.clone();
 				
 				// Not optimal, but otherwise I couldn't get through the compiler
                 // In the future the borrow checker will be able to handle this special case
@@ -60,7 +60,7 @@ impl ::sudoku::Sudoku {
 		let mut difference = possible_numbers.difference(other_numbers);
 		match (difference.next(), difference.next()) {
 			(Some(a), None) => {
-				self.fields[x][y].set_number(a.clone());
+				self.get_mut(x, y).set_number(a.clone());
 				self.project_number(x, y);
 				true
 			}
@@ -74,7 +74,7 @@ impl ::sudoku::Sudoku {
 		let mut other_numbers = HashSet::new();
 		for offY in range(0u, 9) {
 			if offY != y {
-                other_numbers.extend(self.fields[x][offY].possible_numbers.iter().map(|&n| n))
+                other_numbers.extend(self.get(x, offY).possible_numbers.iter().map(|&n| n))
 			}
 		}
 		
@@ -87,7 +87,7 @@ impl ::sudoku::Sudoku {
 		let mut other_numbers = HashSet::new();
 		for offX in range(0u, 9) {
 			if offX != x {
-                other_numbers.extend(self.fields[offX][y].possible_numbers.iter().map(|&n| n));
+                other_numbers.extend(self.get(offX, y).possible_numbers.iter().map(|&n| n));
 			}
 		}
 	
@@ -103,7 +103,7 @@ impl ::sudoku::Sudoku {
 			for offY in range(0u, 3) {
 				// Push only the values of the other fields
 				if cornerX + offX != x || cornerY + offY != y {
-                    other_numbers.extend(self.fields[cornerX + offX][cornerY + offY].possible_numbers.iter().map(|&n| n));
+                    other_numbers.extend(self.get(cornerX + offX, cornerY + offY).possible_numbers.iter().map(|&n| n));
 				}
 			}
 		}

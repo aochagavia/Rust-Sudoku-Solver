@@ -26,14 +26,14 @@ fn main() {
 		return;
 	}
 	
-	let path_str = &args[1];
-	let path = Path::new(path_str.clone());
+	let path_str = &args.get(1);
+	let path = Path::new(path_str.as_slice());
 	
     let file = File::open(&path).unwrap();
     let mut sudoku = Sudoku::new(BufferedReader::new(file));
     
     // Apply brute force directly if "-b" is specified as argument
-    if args.len() > 2 && args[2] == "-b".to_owned() {
+    if args.len() > 2 && args.get(2).as_slice() == "-b" {
         println!("Brute forcing...");
         sudoku.brute_force();
     } else {

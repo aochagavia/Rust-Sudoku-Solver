@@ -40,7 +40,7 @@ impl ::sudoku::Sudoku {
         }
 	
         // set_next_number will return false when there is no number left to be assigned
-		while self.fields[x][y].set_next_number() {
+		while self.get_mut(x, y).set_next_number() {
             // If the condition is not broken, assign the next field
             // If it is broken, test with the next available number
             if self.is_valid(x, y)
@@ -55,13 +55,13 @@ impl ::sudoku::Sudoku {
 	// Check that the number in the given coordinates does not break
 	// the sudoku condition
 	fn is_valid(&mut self, x: uint, y: uint) -> bool {
-		let number = self.fields[x][y].get_number();
+		let number = self.get(x, y).get_number();
 	
 		// Check horizontal line
 		for i in range(0u, 9) {
 			if i != x
-			&& self.fields[i][y].number_found()
-			&& self.fields[i][y].get_number() == number {
+			&& self.get(i, y).number_found()
+			&& self.get(i, y).get_number() == number {
 				return false;
 			}
 		}
@@ -69,8 +69,8 @@ impl ::sudoku::Sudoku {
 		// Check vertical line
 		for i in range(0u, 9) {
 			if i != y
-			&& self.fields[x][i].number_found()
-			&& self.fields[x][i].get_number() == number {
+			&& self.get(x, i).number_found()
+			&& self.get(x, i).get_number() == number {
 				return false;
 			}
 		}
@@ -80,8 +80,8 @@ impl ::sudoku::Sudoku {
 		for offX in range(0u, 3) {
 			for offY in range(0u, 3) {
 				if cornerX + offX != x || cornerY + offY != y {
-					if self.fields[cornerX + offX][cornerY + offY].number_found()
-					&& self.fields[cornerX + offX][cornerY + offY].get_number() == number {
+					if self.get(cornerX + offX, cornerY + offY).number_found()
+					&& self.get(cornerX + offX, cornerY + offY).get_number() == number {
 						return false;
 					}
 				}
@@ -96,7 +96,7 @@ impl ::sudoku::Sudoku {
         
 		for x in range(0u, 9) {
 			for y in range(0u, 9) {
-				if !self.fields[x][y].number_found() {
+				if !self.get(x, y).number_found() {
 					points.push(Point(x, y));
 				}
 			}

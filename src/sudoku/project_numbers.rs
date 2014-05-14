@@ -38,7 +38,7 @@ impl ::sudoku::Sudoku {
 		
 		for x in range(0u, 9) {
 			for y in range(0u, 9) {
-				if !self.fields[x][y].projected && self.fields[x][y].number_found() {
+				if !self.get(x, y).projected && self.get(x, y).number_found() {
 					progress = self.project_number(x, y) || progress;
 				}
 			}
@@ -49,16 +49,16 @@ impl ::sudoku::Sudoku {
 	
 	// Will return true if we make progress so we can know if we are stuck
 	pub fn project_number(&mut self, x: uint, y: uint) -> bool {
-		self.fields[x][y].projected = true;
+		self.get_mut(x, y).projected = true;
 		self.project_h(x, y) | self.project_v(x, y) | self.project_square(x, y)
 	}
 	
 	// Project the number in its horizontal line
 	fn project_h(&mut self, x: uint, y: uint) -> bool {
-		let num = self.fields[x][y].get_number();
+		let num = self.get(x, y).get_number();
 		let mut progress = false;
 		for i in range(0u, 9) {
-			progress = self.fields[i][y].cannot_be(num) || progress;
+			progress = self.get_mut(i, y).cannot_be(num) || progress;
 		}
 		
 		progress
@@ -66,10 +66,10 @@ impl ::sudoku::Sudoku {
 	
 	// Project the number in its vertical line
 	fn project_v(&mut self, x: uint, y: uint) -> bool {
-		let num = self.fields[x][y].get_number();
+		let num = self.get(x, y).get_number();
 		let mut progress = false;
 		for i in range(0u, 9) {
-			progress = self.fields[x][i].cannot_be(num) || progress;
+			progress = self.get_mut(x, i).cannot_be(num) || progress;
 		}
 		
 		progress
@@ -77,13 +77,13 @@ impl ::sudoku::Sudoku {
 	
 	// Project the number in its square
 	fn project_square(&mut self, x: uint, y: uint) -> bool {
-		let num = self.fields[x][y].get_number();
+		let num = self.get(x, y).get_number();
 		let mut progress = false;
 		
 		let (cX, cY) = Sudoku::get_corner(x, y);
 		for i in range(cX, cX + 3) {
 			for j in range(cY, cY + 3) {
-				progress = self.fields[i][j].cannot_be(num) || progress;
+				progress = self.get_mut(i, j).cannot_be(num) || progress;
 			}
 		}
 		

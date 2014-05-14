@@ -23,20 +23,19 @@ mod brute_force;
 // Sudoku
 #[deriving(Clone)]
 pub struct Sudoku {
-	fields: ~[~[Field]]
+	fields: Vec<Vec<Field>>
 }
 
 impl Sudoku {
 	pub fn new<T: Reader>(mut reader: BufferedReader<T>) -> Sudoku {
 		// Use one column of 9 fields to fill 9 rows
-        // When DST arrives we will no longer need the .move_iter() and what is to the right
-		let column = Vec::from_fn(9, |_| Field::new()).move_iter().collect::<~[Field]>();
-		let mut rows = Vec::from_fn(9, |_| column.clone()).move_iter().collect::<~[~[Field]]>();
+		let column = Vec::from_fn(9, |_| Field::new());
+		let mut rows = Vec::from_fn(9, |_| column.clone());
 		
 		// Read a row per line
 		for y in range(0u, 9) {
 			let line = reader.read_line().ok().unwrap_or("".to_owned());
-			let numbers = line.trim_right().chars().collect::<~[char]>();
+			let numbers = line.trim_right().chars().collect::<Vec<char>>();
 			
 			if numbers.len() < 9 {
 				fail!("Invalid sudoku file! Line: {}", line.trim_right());
@@ -44,9 +43,9 @@ impl Sudoku {
 			
 			// Values that cannot be parsed are interpreted as empty fields
 			for x in range(0u, 9) {
-				let parsed = from_str::<uint>(numbers[x].to_str());
+				let parsed = from_str::<uint>(numbers.get(x).to_str());
 				if parsed.is_some() {
-					rows[x][y].set_number(parsed.unwrap());
+					rows.get_mut(x).get_mut(y).set_number(parsed.unwrap());
 				}
 			}
 		}
@@ -78,6 +77,14 @@ impl Sudoku {
 		assert!(x < 9 && y < 9);
 		((x / 3) * 3, (y / 3) * 3)
 	}
+    
+    pub fn get<'a>(&'a self, x: uint, y: uint) -> &'a Field {
+        self.fields.get(x).get(y)
+    }
+    
+    pub fn get_mut<'a>(&'a mut self, x: uint, y: uint) -> &'a mut Field {
+        self.fields.get_mut(x).get_mut(y)
+    }
 }
 
 impl Show for Sudoku {
@@ -95,8 +102,8 @@ impl Show for Sudoku {
 				}
 			
 				buf.push_str(
-				if self.fields[x][y].number_found() {
-					self.fields[x][y].get_number().to_str()
+				if self.get(x, y).number_found() {
+					self.get(x, y).get_number().to_str()
 				} else {
 					" ".to_owned()
 				});
