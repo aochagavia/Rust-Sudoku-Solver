@@ -12,7 +12,7 @@ detect_uniques.rs, project_lines.rs and brute_force.rs
 
 use std::fmt::{Show, Formatter, Result};
 use std::io::BufferedReader;
-use sudoku::field::Field;
+use self::field::Field;
 
 mod field;
 mod project_numbers;

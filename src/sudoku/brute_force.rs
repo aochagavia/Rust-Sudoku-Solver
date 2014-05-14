@@ -14,7 +14,7 @@ The steps are the following:
 
 */
 
-use sudoku::Sudoku;
+use super::Sudoku;
 use std::slice::Items;
 
 struct Point(uint, uint);

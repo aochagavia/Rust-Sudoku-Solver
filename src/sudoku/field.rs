@@ -20,7 +20,7 @@ pub struct Field {
 
 impl Field {
 	pub fn new() -> Field {
-		let set = range(1u, 10).collect::<HashSet<uint>>();
+		let set = range(1u, 10).collect();
 		Field { projected: false, possible_numbers: set }
 	}
 
@@ -40,7 +40,7 @@ impl Field {
 	pub fn get_number(&self) -> uint {
         let mut it = self.possible_numbers.iter();
 		match (it.next(), it.next()) {
-			(Some(x), None) => { *x }
+			(Some(&x), None) => { x }
 			_ => { fail!("Called get_number(), but there are many possible numbers") }
 		}
 	}
@@ -52,10 +52,7 @@ impl Field {
 			return false;
 		}
 		
-		let contains = self.possible_numbers.contains(&x);
-		self.possible_numbers.remove(&x);
-		
-		contains
+		self.possible_numbers.remove(&x)
 	}
 	
 	// Resets the possibilities to their default range [1, 9]

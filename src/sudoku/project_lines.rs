@@ -19,7 +19,7 @@ will become
 	
 */
 
-use sudoku::Sudoku;
+use super::Sudoku;
 use collections::HashSet;
 
 impl ::sudoku::Sudoku {

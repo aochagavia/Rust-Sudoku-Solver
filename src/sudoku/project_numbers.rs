@@ -29,7 +29,7 @@ will become
 
 */
 
-use sudoku::Sudoku;
+use super::Sudoku;
 
 impl ::sudoku::Sudoku {
 	// Projects all fields that are not empty and haven't yet been projected

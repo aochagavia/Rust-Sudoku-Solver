@@ -20,7 +20,7 @@ but it is the only field in which the number 6 can be.
 
 */
 
-use sudoku::Sudoku;
+use super::Sudoku;
 use collections::HashSet;
 
 impl ::sudoku::Sudoku {
@@ -35,14 +35,14 @@ impl ::sudoku::Sudoku {
 					continue;
 				}
 				
-				let possible_numbers = self.get(x, y).possible_numbers.clone();
-				
 				// Not optimal, but otherwise I couldn't get through the compiler
                 // In the future the borrow checker will be able to handle this special case
 				let other_numbers_v = self.other_numbers_v(x, y);
 				let other_numbers_h = self.other_numbers_h(x, y);
 				let other_numbers_square = self.other_numbers_square(x, y);
 				
+                let possible_numbers = self.get(x, y).possible_numbers.clone();
+                
 				progress = self.check_and_assign(x, y, &possible_numbers, &other_numbers_v)
 					|| self.check_and_assign(x, y, &possible_numbers, &other_numbers_h)
 					|| self.check_and_assign(x, y, &possible_numbers, &other_numbers_square)
@@ -59,8 +59,8 @@ impl ::sudoku::Sudoku {
 	pub fn check_and_assign(&mut self, x: uint, y: uint, possible_numbers: &HashSet<uint>, other_numbers: &HashSet<uint>) -> bool {
 		let mut difference = possible_numbers.difference(other_numbers);
 		match (difference.next(), difference.next()) {
-			(Some(a), None) => {
-				self.get_mut(x, y).set_number(a.clone());
+			(Some(&a), None) => {
+				self.get_mut(x, y).set_number(a);
 				self.project_number(x, y);
 				true
 			}
@@ -97,7 +97,7 @@ impl ::sudoku::Sudoku {
 	// Get a set with the possible numbers of all fields in the square,
 	// discarding the number located in the given coordinates
 	pub fn other_numbers_square(&mut self, x: uint, y: uint) -> HashSet<uint> {
-		let mut other_numbers = HashSet::<uint>::new();
+		let mut other_numbers = HashSet::new();
 		let (cornerX, cornerY) = Sudoku::get_corner(x, y);
 		for offX in range(0u, 3) {
 			for offY in range(0u, 3) {
