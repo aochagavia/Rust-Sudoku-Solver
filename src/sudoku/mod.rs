@@ -10,7 +10,8 @@ detect_uniques.rs, project_lines.rs and brute_force.rs
 
 */
 
-use std::fmt::{Show, Formatter, Result};
+use std::fmt;
+use std::fmt::{Show, Formatter};
 use std::io::BufferedReader;
 use self::field::Field;
 
@@ -34,16 +35,16 @@ impl Sudoku {
 		
 		// Read a row per line
 		for y in range(0u, 9) {
-			let line = reader.read_line().ok().unwrap_or("".to_owned());
-			let numbers = line.trim_right().chars().collect::<Vec<char>>();
+			let line = reader.read_line().ok().unwrap_or("".to_string());
+			let numbers = line.as_slice().trim_right().chars().collect::<Vec<char>>();
 			
 			if numbers.len() < 9 {
-				fail!("Invalid sudoku file! Line: {}", line.trim_right());
+				fail!("Invalid sudoku file! Line: {}", line.as_slice().trim_right());
 			}
 			
 			// Values that cannot be parsed are interpreted as empty fields
 			for x in range(0u, 9) {
-				let parsed = from_str::<uint>(numbers.get(x).to_str());
+				let parsed = from_str::<uint>(numbers.get(x).to_str().as_slice());
 				if parsed.is_some() {
 					rows.get_mut(x).get_mut(y).set_number(parsed.unwrap());
 				}
@@ -88,30 +89,26 @@ impl Sudoku {
 }
 
 impl Show for Sudoku {
-	fn fmt(&self, f: &mut Formatter) -> Result {
-		let mut buf = StrBuf::new();
-        
+	fn fmt(&self, f: &mut Formatter) -> fmt::Result {
 		for y in range(0u, 9) {
 			if y == 3 || y == 6 {
-				buf.push_str("-".repeat(12));
-				buf.push_str("\n");
+				try!(write!(f, "{}\n", "-".repeat(11)));
 			}
 			for x in range(0u, 9) {
 				if x == 3 || x == 6 {
-					buf.push_char('|');
+					try!(write!(f, "|"));
 				}
 			
-				buf.push_str(
 				if self.get(x, y).number_found() {
-					self.get(x, y).get_number().to_str()
+					try!(write!(f, "{}", self.get(x, y).get_number()))
 				} else {
-					" ".to_owned()
-				});
+					try!(write!(f, " "))
+				}
 			}
 			
-			buf.push_str("\n");
+			try!(write!(f, "\n"));
 		}
-	
-        f.pad(buf.as_slice())
+        
+        Ok(())
 	}
 }

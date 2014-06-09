@@ -9,7 +9,7 @@ according to the algorithm in project_numbers.rs
 
 */
 
-use collections::HashSet;
+use std::collections::HashSet;
 
 // This is the basic unit of the sudoku
 #[deriving(Clone)]

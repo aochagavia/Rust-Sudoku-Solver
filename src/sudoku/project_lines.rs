@@ -20,7 +20,7 @@ will become
 */
 
 use super::Sudoku;
-use collections::HashSet;
+use std::collections::HashSet;
 
 impl ::sudoku::Sudoku {
 	// Checks each square to see if it contains any lines that can be projected

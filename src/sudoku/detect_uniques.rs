@@ -21,7 +21,7 @@ but it is the only field in which the number 6 can be.
 */
 
 use super::Sudoku;
-use collections::HashSet;
+use std::collections::HashSet;
 
 impl ::sudoku::Sudoku {
 	// Detect 

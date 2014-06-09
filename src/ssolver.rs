@@ -6,8 +6,6 @@ For details on the implementation of the Sudoku look at sudoku/mod.rs
 
 */
 
-extern crate collections;
-
 use std::io::{File, BufferedReader};
 use std::os;
 use sudoku::Sudoku;
