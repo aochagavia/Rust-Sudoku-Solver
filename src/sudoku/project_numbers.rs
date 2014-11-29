@@ -17,9 +17,9 @@ That means that it can only be 9
 
 The same happens for squares:
 
-123|	
+123|
 456|
-78-|	
+78-|
 
 will become
 
@@ -31,11 +31,16 @@ will become
 
 use super::Sudoku;
 
-impl ::sudoku::Sudoku {
+pub trait ProjectNumbers {
+    fn project_numbers(&mut self) -> bool;
+    fn project_number(&mut self, x: uint, y: uint) -> bool;
+}
+
+impl ProjectNumbers for Sudoku {
 	// Projects all fields that are not empty and haven't yet been projected
-	pub fn project_numbers(&mut self) -> bool {
+	fn project_numbers(&mut self) -> bool {
 		let mut progress = false;
-		
+
 		for x in range(0u, 9) {
 			for y in range(0u, 9) {
 				if !self.get(x, y).projected && self.get(x, y).number_found() {
@@ -43,50 +48,50 @@ impl ::sudoku::Sudoku {
 				}
 			}
 		}
-		
+
 		progress
 	}
-	
+
 	// Will return true if we make progress so we can know if we are stuck
-	pub fn project_number(&mut self, x: uint, y: uint) -> bool {
+	fn project_number(&mut self, x: uint, y: uint) -> bool {
 		self.get_mut(x, y).projected = true;
-		self.project_h(x, y) | self.project_v(x, y) | self.project_square(x, y)
+		project_h(self, x, y) | project_v(self, x, y) | project_square(self, x, y)
 	}
-	
-	// Project the number in its horizontal line
-	fn project_h(&mut self, x: uint, y: uint) -> bool {
-		let num = self.get(x, y).get_number();
-		let mut progress = false;
-		for i in range(0u, 9) {
-			progress = self.get_mut(i, y).cannot_be(num) || progress;
-		}
-		
-		progress
-	}
-	
-	// Project the number in its vertical line
-	fn project_v(&mut self, x: uint, y: uint) -> bool {
-		let num = self.get(x, y).get_number();
-		let mut progress = false;
-		for i in range(0u, 9) {
-			progress = self.get_mut(x, i).cannot_be(num) || progress;
-		}
-		
-		progress
-	}
-	
-	// Project the number in its square
-	fn project_square(&mut self, x: uint, y: uint) -> bool {
-		let num = self.get(x, y).get_number();
-		let mut progress = false;
-		
-		let (cX, cY) = Sudoku::get_corner(x, y);
-		for i in range(cX, cX + 3) {
-			for j in range(cY, cY + 3) {
-				progress = self.get_mut(i, j).cannot_be(num) || progress;
-			}
-		}
-		
-		progress
-	}
+}
+
+// Project the number in its horizontal line
+fn project_h(sudoku: &mut Sudoku, x: uint, y: uint) -> bool {
+    let num = sudoku.get(x, y).get_number();
+    let mut progress = false;
+    for i in range(0u, 9) {
+        progress = sudoku.get_mut(i, y).cannot_be(num) || progress;
+    }
+
+    progress
+}
+
+// Project the number in its vertical line
+fn project_v(sudoku: &mut Sudoku, x: uint, y: uint) -> bool {
+    let num = sudoku.get(x, y).get_number();
+    let mut progress = false;
+    for i in range(0u, 9) {
+        progress = sudoku.get_mut(x, i).cannot_be(num) || progress;
+    }
+
+    progress
+}
+
+// Project the number in its square
+fn project_square(sudoku: &mut Sudoku, x: uint, y: uint) -> bool {
+    let num = sudoku.get(x, y).get_number();
+    let mut progress = false;
+
+    let (corner_x, corner_y) = Sudoku::get_corner(x, y);
+    for i in range(corner_x, corner_x + 3) {
+        for j in range(corner_y, corner_y + 3) {
+            progress = sudoku.get_mut(i, j).cannot_be(num) || progress;
+        }
+    }
+
+    progress
 }

@@ -21,11 +21,20 @@ but it is the only field in which the number 6 can be.
 */
 
 use super::Sudoku;
+use super::project_numbers::ProjectNumbers;
 use std::collections::HashSet;
 
-impl ::sudoku::Sudoku {
-	// Detect 
-	pub fn detect_uniques(&mut self) -> bool {
+pub trait DetectUniques {
+    fn detect_uniques(&mut self) -> bool;
+    fn check_and_assign(&mut self, x: uint, y: uint, possible_numbers: &HashSet<uint>, other_numbers: &HashSet<uint>) -> bool;
+    fn other_numbers_v(&mut self, x: uint, y: uint) -> HashSet<uint>;
+    fn other_numbers_h(&mut self, x: uint, y: uint) -> HashSet<uint>;
+    fn other_numbers_square(&mut self, x: uint, y: uint) -> HashSet<uint>;
+}
+
+impl DetectUniques for Sudoku {
+	// Detect
+	fn detect_uniques(&mut self) -> bool {
 		let mut progress = false;
 	
 		for x in range(0u, 9) {
@@ -56,7 +65,7 @@ impl ::sudoku::Sudoku {
 	// Check if the set difference between the possible_numbers of the current field
 	// and the other_numbers leaves a single value
 	// If that is the case assign it to the field in the given coordinates and project it
-	pub fn check_and_assign(&mut self, x: uint, y: uint, possible_numbers: &HashSet<uint>, other_numbers: &HashSet<uint>) -> bool {
+	fn check_and_assign(&mut self, x: uint, y: uint, possible_numbers: &HashSet<uint>, other_numbers: &HashSet<uint>) -> bool {
 		let mut difference = possible_numbers.difference(other_numbers);
 		match (difference.next(), difference.next()) {
 			(Some(&a), None) => {
@@ -70,11 +79,11 @@ impl ::sudoku::Sudoku {
 	
 	// Get a set with the possible numbers of all fields in the vertical line,
 	// discarding the number located in the given coordinates
-	pub fn other_numbers_v(&mut self, x: uint, y: uint) -> HashSet<uint> {
+	fn other_numbers_v(&mut self, x: uint, y: uint) -> HashSet<uint> {
 		let mut other_numbers = HashSet::new();
-		for offY in range(0u, 9) {
-			if offY != y {
-                other_numbers.extend(self.get(x, offY).possible_numbers.iter().map(|&n| n))
+		for off_y in range(0u, 9) {
+			if off_y != y {
+                other_numbers.extend(self.get(x, off_y).possible_numbers.iter().map(|&n| n))
 			}
 		}
 		
@@ -83,11 +92,11 @@ impl ::sudoku::Sudoku {
 	
 	// Get a set with the possible numbers of all fields in the horizontal line,
 	// discarding the number located in the given coordinates
-	pub fn other_numbers_h(&mut self, x: uint, y: uint) -> HashSet<uint> {
+	fn other_numbers_h(&mut self, x: uint, y: uint) -> HashSet<uint> {
 		let mut other_numbers = HashSet::new();
-		for offX in range(0u, 9) {
-			if offX != x {
-                other_numbers.extend(self.get(offX, y).possible_numbers.iter().map(|&n| n));
+		for off_x in range(0u, 9) {
+			if off_x != x {
+                other_numbers.extend(self.get(off_x, y).possible_numbers.iter().map(|&n| n));
 			}
 		}
 	
@@ -96,14 +105,14 @@ impl ::sudoku::Sudoku {
 	
 	// Get a set with the possible numbers of all fields in the square,
 	// discarding the number located in the given coordinates
-	pub fn other_numbers_square(&mut self, x: uint, y: uint) -> HashSet<uint> {
+	fn other_numbers_square(&mut self, x: uint, y: uint) -> HashSet<uint> {
 		let mut other_numbers = HashSet::new();
-		let (cornerX, cornerY) = Sudoku::get_corner(x, y);
-		for offX in range(0u, 3) {
-			for offY in range(0u, 3) {
+		let (corner_x, corner_y) = Sudoku::get_corner(x, y);
+		for off_x in range(0u, 3) {
+			for off_y in range(0u, 3) {
 				// Push only the values of the other fields
-				if cornerX + offX != x || cornerY + offY != y {
-                    other_numbers.extend(self.get(cornerX + offX, cornerY + offY).possible_numbers.iter().map(|&n| n));
+				if corner_x + off_x != x || corner_y + off_y != y {
+                    other_numbers.extend(self.get(corner_x + off_x, corner_y + off_y).possible_numbers.iter().map(|&n| n));
 				}
 			}
 		}

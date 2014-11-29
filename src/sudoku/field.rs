@@ -41,7 +41,7 @@ impl Field {
         let mut it = self.possible_numbers.iter();
 		match (it.next(), it.next()) {
 			(Some(&x), None) => { x }
-			_ => { fail!("Called get_number(), but there are many possible numbers") }
+			_ => { panic!("Called get_number(), but there are many possible numbers") }
 		}
 	}
 	
