@@ -15,9 +15,8 @@ The steps are the following:
 */
 
 use super::Sudoku;
-use std::slice::Items;
 
-struct Point(uint, uint);
+struct Point(usize, usize);
 
 pub trait BruteForce {
     fn brute_force(&mut self) -> bool;
@@ -29,12 +28,14 @@ impl BruteForce for Sudoku {
 	fn brute_force(&mut self) -> bool {
 		// Assign numbers to the empty fields recursively
         let e_fields = get_empty_fields(self);
-		assign_field(self, e_fields.iter())
+		assign_field(self, &mut e_fields.iter())
 	}
 }
 
 // Recursive function to brute force the empty fields
-fn assign_field(sudoku: &mut Sudoku, mut empty_fields: Items<Point>) -> bool {
+fn assign_field<'a, T>(sudoku: &mut Sudoku, empty_fields: &mut T) -> bool
+where T: Iterator<Item=&'a Point>
+{
     // If all empty fields are assigned without errors, the sudoku is completed
     let x; let y;
     match empty_fields.next() {
@@ -46,25 +47,25 @@ fn assign_field(sudoku: &mut Sudoku, mut empty_fields: Items<Point>) -> bool {
     while sudoku.get_mut(x, y).set_next_number() {
         // If the condition is not broken, assign the next field
         // If it is broken, test with the next available number
-        if sudoku.is_valid(x, y)
-        && assign_field(sudoku, empty_fields) {
+
+        if sudoku.is_valid(x, y) && assign_field(sudoku, empty_fields) {
             return true;
         }
     }
-    
+
     false
 }
 
 fn get_empty_fields(sudoku: &mut Sudoku) -> Vec<Point> {
     let mut points = vec!();
-    
-    for x in range(0u, 9) {
-        for y in range(0u, 9) {
+
+    for x in 0..9 {
+        for y in 0..9 {
             if !sudoku.get(x, y).number_found() {
                 points.push(Point(x, y));
             }
         }
     }
-    
+
     points
 }

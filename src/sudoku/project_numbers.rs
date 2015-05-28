@@ -33,7 +33,7 @@ use super::Sudoku;
 
 pub trait ProjectNumbers {
     fn project_numbers(&mut self) -> bool;
-    fn project_number(&mut self, x: uint, y: uint) -> bool;
+    fn project_number(&mut self, x: usize, y: usize) -> bool;
 }
 
 impl ProjectNumbers for Sudoku {
@@ -41,8 +41,8 @@ impl ProjectNumbers for Sudoku {
 	fn project_numbers(&mut self) -> bool {
 		let mut progress = false;
 
-		for x in range(0u, 9) {
-			for y in range(0u, 9) {
+		for x in 0..9 {
+			for y in 0..9 {
 				if !self.get(x, y).projected && self.get(x, y).number_found() {
 					progress = self.project_number(x, y) || progress;
 				}
@@ -53,17 +53,17 @@ impl ProjectNumbers for Sudoku {
 	}
 
 	// Will return true if we make progress so we can know if we are stuck
-	fn project_number(&mut self, x: uint, y: uint) -> bool {
+	fn project_number(&mut self, x: usize, y: usize) -> bool {
 		self.get_mut(x, y).projected = true;
 		project_h(self, x, y) | project_v(self, x, y) | project_square(self, x, y)
 	}
 }
 
 // Project the number in its horizontal line
-fn project_h(sudoku: &mut Sudoku, x: uint, y: uint) -> bool {
+fn project_h(sudoku: &mut Sudoku, x: usize, y: usize) -> bool {
     let num = sudoku.get(x, y).get_number();
     let mut progress = false;
-    for i in range(0u, 9) {
+    for i in 0..9 {
         progress = sudoku.get_mut(i, y).cannot_be(num) || progress;
     }
 
@@ -71,10 +71,10 @@ fn project_h(sudoku: &mut Sudoku, x: uint, y: uint) -> bool {
 }
 
 // Project the number in its vertical line
-fn project_v(sudoku: &mut Sudoku, x: uint, y: uint) -> bool {
+fn project_v(sudoku: &mut Sudoku, x: usize, y: usize) -> bool {
     let num = sudoku.get(x, y).get_number();
     let mut progress = false;
-    for i in range(0u, 9) {
+    for i in 0..9 {
         progress = sudoku.get_mut(x, i).cannot_be(num) || progress;
     }
 
@@ -82,13 +82,13 @@ fn project_v(sudoku: &mut Sudoku, x: uint, y: uint) -> bool {
 }
 
 // Project the number in its square
-fn project_square(sudoku: &mut Sudoku, x: uint, y: uint) -> bool {
+fn project_square(sudoku: &mut Sudoku, x: usize, y: usize) -> bool {
     let num = sudoku.get(x, y).get_number();
     let mut progress = false;
 
     let (corner_x, corner_y) = Sudoku::get_corner(x, y);
-    for i in range(corner_x, corner_x + 3) {
-        for j in range(corner_y, corner_y + 3) {
+    for i in (corner_x..corner_x + 3) {
+        for j in (corner_y..corner_y + 3) {
             progress = sudoku.get_mut(i, j).cannot_be(num) || progress;
         }
     }

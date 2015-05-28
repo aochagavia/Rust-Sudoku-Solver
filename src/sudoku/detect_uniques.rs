@@ -26,10 +26,10 @@ use std::collections::HashSet;
 
 pub trait DetectUniques {
     fn detect_uniques(&mut self) -> bool;
-    fn check_and_assign(&mut self, x: uint, y: uint, possible_numbers: &HashSet<uint>, other_numbers: &HashSet<uint>) -> bool;
-    fn other_numbers_v(&mut self, x: uint, y: uint) -> HashSet<uint>;
-    fn other_numbers_h(&mut self, x: uint, y: uint) -> HashSet<uint>;
-    fn other_numbers_square(&mut self, x: uint, y: uint) -> HashSet<uint>;
+    fn check_and_assign(&mut self, x: usize, y: usize, possible_numbers: &HashSet<usize>, other_numbers: &HashSet<usize>) -> bool;
+    fn other_numbers_v(&mut self, x: usize, y: usize) -> HashSet<usize>;
+    fn other_numbers_h(&mut self, x: usize, y: usize) -> HashSet<usize>;
+    fn other_numbers_square(&mut self, x: usize, y: usize) -> HashSet<usize>;
 }
 
 impl DetectUniques for Sudoku {
@@ -37,8 +37,8 @@ impl DetectUniques for Sudoku {
 	fn detect_uniques(&mut self) -> bool {
 		let mut progress = false;
 	
-		for x in range(0u, 9) {
-			for y in range(0u, 9) {
+		for x in 0..9 {
+			for y in 0..9 {
 				// Discard the field if we have already found a number for it
 				if self.get(x, y).number_found() {
 					continue;
@@ -65,7 +65,7 @@ impl DetectUniques for Sudoku {
 	// Check if the set difference between the possible_numbers of the current field
 	// and the other_numbers leaves a single value
 	// If that is the case assign it to the field in the given coordinates and project it
-	fn check_and_assign(&mut self, x: uint, y: uint, possible_numbers: &HashSet<uint>, other_numbers: &HashSet<uint>) -> bool {
+	fn check_and_assign(&mut self, x: usize, y: usize, possible_numbers: &HashSet<usize>, other_numbers: &HashSet<usize>) -> bool {
 		let mut difference = possible_numbers.difference(other_numbers);
 		match (difference.next(), difference.next()) {
 			(Some(&a), None) => {
@@ -79,9 +79,9 @@ impl DetectUniques for Sudoku {
 	
 	// Get a set with the possible numbers of all fields in the vertical line,
 	// discarding the number located in the given coordinates
-	fn other_numbers_v(&mut self, x: uint, y: uint) -> HashSet<uint> {
+	fn other_numbers_v(&mut self, x: usize, y: usize) -> HashSet<usize> {
 		let mut other_numbers = HashSet::new();
-		for off_y in range(0u, 9) {
+		for off_y in 0..9 {
 			if off_y != y {
                 other_numbers.extend(self.get(x, off_y).possible_numbers.iter().map(|&n| n))
 			}
@@ -92,9 +92,9 @@ impl DetectUniques for Sudoku {
 	
 	// Get a set with the possible numbers of all fields in the horizontal line,
 	// discarding the number located in the given coordinates
-	fn other_numbers_h(&mut self, x: uint, y: uint) -> HashSet<uint> {
+	fn other_numbers_h(&mut self, x: usize, y: usize) -> HashSet<usize> {
 		let mut other_numbers = HashSet::new();
-		for off_x in range(0u, 9) {
+		for off_x in 0..9 {
 			if off_x != x {
                 other_numbers.extend(self.get(off_x, y).possible_numbers.iter().map(|&n| n));
 			}
@@ -105,11 +105,11 @@ impl DetectUniques for Sudoku {
 	
 	// Get a set with the possible numbers of all fields in the square,
 	// discarding the number located in the given coordinates
-	fn other_numbers_square(&mut self, x: uint, y: uint) -> HashSet<uint> {
+	fn other_numbers_square(&mut self, x: usize, y: usize) -> HashSet<usize> {
 		let mut other_numbers = HashSet::new();
 		let (corner_x, corner_y) = Sudoku::get_corner(x, y);
-		for off_x in range(0u, 3) {
-			for off_y in range(0u, 3) {
+		for off_x in 0..3 {
+			for off_y in 0..3 {
 				// Push only the values of the other fields
 				if corner_x + off_x != x || corner_y + off_y != y {
                     other_numbers.extend(self.get(corner_x + off_x, corner_y + off_y).possible_numbers.iter().map(|&n| n));
