@@ -15,16 +15,16 @@ use sudoku::{Sudoku, BruteForce};
 mod sudoku;
 
 fn main() {
-	println!("---------------------");
-	println!("|   Sudoku-Solver   |");
-	println!("---------------------\n");
+    println!("---------------------");
+    println!("|   Sudoku-Solver   |");
+    println!("---------------------\n");
 
-	let args: Vec<_> = env::args().collect();
-	if args.len() < 2 {
-		println!("Usage: ssolver sudoku_to_solve [-b]");
-		println!("Use -b if you want to use brute forcing exclusively (to compare performance)");
-		return;
-	}
+    let args: Vec<_> = env::args().collect();
+    if args.len() < 2 {
+        println!("Usage: ssolver sudoku_to_solve [-b]");
+        println!("Use -b if you want to use brute forcing exclusively (to compare performance)");
+        return;
+    }
 
     let file = File::open(&args[1]).unwrap();
     let mut sudoku = Sudoku::new(BufReader::new(file));

@@ -1,4 +1,4 @@
 [root]
-name = "sudoku-solver"
+name = "ssolver"
 version = "0.0.1"
 

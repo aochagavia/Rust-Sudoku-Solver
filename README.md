@@ -22,7 +22,6 @@ Detailed description is provided as comments at the beginning of each source fil
 
 The input format is very intuitive and you will surely understand it when you take a look at the files inside the directory "samples"
 
-
 ##Hey! Something is wrong in your code!
 
 Then you can open a pull request. I promise I will look at it.

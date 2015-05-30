@@ -6,9 +6,9 @@ fast_solve method fails.
 The steps are the following:
 1- Get all coordinates of empty fields
 2- Loop through each of them
-	Assign a number, check if it is valid for the sudoku
-	If it is valid, assign the next field
-	If it is invalid, go back to the previous field and assign the next valid number
+    Assign a number, check if it is valid for the sudoku
+    If it is valid, assign the next field
+    If it is invalid, go back to the previous field and assign the next valid number
 3- If we reach the last field and we can assign it a valid number, the sudoku is completed
 4- If we get back to the first field and we cannot assign it a valid number, the sudoku is not valid
 
@@ -23,18 +23,17 @@ pub trait BruteForce {
 }
 
 impl BruteForce for Sudoku {
-	// Attempts to brute force the sudoku.
-	// Returns true if it works.
-	fn brute_force(&mut self) -> bool {
-		// Assign numbers to the empty fields recursively
+    // Attempts to brute force the sudoku.
+    // Returns true if it works.
+    fn brute_force(&mut self) -> bool {
+        // Assign numbers to the empty fields recursively
         let e_fields = get_empty_fields(self);
-		assign_field(self, &mut e_fields.iter())
-	}
+        assign_field(self, e_fields.iter())
+    }
 }
 
 // Recursive function to brute force the empty fields
-fn assign_field<'a, T>(sudoku: &mut Sudoku, empty_fields: &mut T) -> bool
-where T: Iterator<Item=&'a Point>
+fn assign_field(sudoku: &mut Sudoku, mut empty_fields: ::std::slice::Iter<Point>) -> bool
 {
     // If all empty fields are assigned without errors, the sudoku is completed
     let x; let y;
@@ -48,7 +47,7 @@ where T: Iterator<Item=&'a Point>
         // If the condition is not broken, assign the next field
         // If it is broken, test with the next available number
 
-        if sudoku.is_valid(x, y) && assign_field(sudoku, empty_fields) {
+        if sudoku.is_valid(x, y) && assign_field(sudoku, empty_fields.clone()) {
             return true;
         }
     }

@@ -29,60 +29,60 @@ mod project_lines;
 // Sudoku
 #[derive(Clone)]
 pub struct Sudoku {
-	fields: Vec<Vec<Field>>
+    fields: Vec<Vec<Field>>
 }
 
 impl Sudoku {
-	pub fn new<T: Read>(reader: BufReader<T>) -> Sudoku {
-		// Use one column of 9 fields to fill 9 rows
-		let column = vec![Field::new(); 9];
-		let mut rows = vec![column; 9];
+    pub fn new<T: Read>(reader: BufReader<T>) -> Sudoku {
+        // Use one column of 9 fields to fill 9 rows
+        let column = vec![Field::new(); 9];
+        let mut rows = vec![column; 9];
 
-		// Read a row per line
+        // Read a row per line
         
-		for (y, line) in reader.lines().take(9).enumerate() {
-			let line = line.ok().unwrap_or("".to_string());
-			let numbers = line.trim_right().chars().collect::<Vec<char>>();
+        for (y, line) in reader.lines().take(9).enumerate() {
+            let line = line.ok().unwrap_or("".to_string());
+            let numbers = line.trim_right().chars().collect::<Vec<char>>();
 
-			if numbers.len() < 9 {
-				panic!("Invalid sudoku file! Line: {}", line.trim_right());
-			}
+            if numbers.len() < 9 {
+                panic!("Invalid sudoku file! Line: {}", line.trim_right());
+            }
 
-			// Values that cannot be parsed are interpreted as empty fields
-			for x in 0..9 {;
-				if let Some(i) = numbers[x].to_string().parse().ok() {
-					rows[x][y].set_number(i);
-				}
-			}
-		}
+            // Values that cannot be parsed are interpreted as empty fields
+            for x in 0..9 {;
+                if let Some(i) = numbers[x].to_string().parse().ok() {
+                    rows[x][y].set_number(i);
+                }
+            }
+        }
 
-		Sudoku { fields: rows }
-	}
+        Sudoku { fields: rows }
+    }
 
-	// Attempts to solve the sudoku without brute forcing it
-	pub fn fast_solve(&mut self) {
-		let mut progress = true;
+    // Attempts to solve the sudoku without brute forcing it
+    pub fn fast_solve(&mut self) {
+        let mut progress = true;
 
-		// If the functions cannot discover new numbers, they will return false
-		while progress {
-			progress = self.project_numbers()
-					|| self.detect_uniques()
-					|| self.project_lines();
-		}
-	}
+        // If the functions cannot discover new numbers, they will return false
+        while progress {
+            progress = self.project_numbers()
+                    || self.detect_uniques()
+                    || self.project_lines();
+        }
+    }
 
-	// Returns true if the sudoku is completed
-	pub fn is_completed(&self) -> bool {
-		self.fields.iter().all(|column| column.iter().all(|field|
-			field.number_found())
-		)
-	}
+    // Returns true if the sudoku is completed
+    pub fn is_completed(&self) -> bool {
+        self.fields.iter().all(|column| column.iter().all(|field|
+            field.number_found())
+        )
+    }
 
-	// Returns the top-left corner of the square in which the given point is
-	pub fn get_corner(x: usize, y: usize) -> (usize, usize) {
-		assert!(x < 9 && y < 9);
-		((x / 3) * 3, (y / 3) * 3)
-	}
+    // Returns the top-left corner of the square in which the given point is
+    pub fn get_corner(x: usize, y: usize) -> (usize, usize) {
+        assert!(x < 9 && y < 9);
+        ((x / 3) * 3, (y / 3) * 3)
+    }
 
     pub fn get(&self, x: usize, y: usize) -> &Field {
         &self.fields[x][y]
@@ -133,26 +133,26 @@ impl Sudoku {
 }
 
 impl Display for Sudoku {
-	fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-		for y in 0..9 {
-			if y == 3 || y == 6 {
-				try!(write!(f, "{}\n", iter::repeat("-").take(12).collect::<String>()));
-			}
-			for x in 0..9 {
-				if x == 3 || x == 6 {
-					try!(write!(f, "|"));
-				}
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        for y in 0..9 {
+            if y == 3 || y == 6 {
+                try!(write!(f, "{}\n", iter::repeat("-").take(12).collect::<String>()));
+            }
+            for x in 0..9 {
+                if x == 3 || x == 6 {
+                    try!(write!(f, "|"));
+                }
 
-				if self.get(x, y).number_found() {
-					try!(write!(f, "{}", self.get(x, y).get_number()))
-				} else {
-					try!(write!(f, " "))
-				}
-			}
+                if self.get(x, y).number_found() {
+                    try!(write!(f, "{}", self.get(x, y).get_number()))
+                } else {
+                    try!(write!(f, " "))
+                }
+            }
 
-			try!(write!(f, "\n"));
-		}
+            try!(write!(f, "\n"));
+        }
 
         Ok(())
-	}
+    }
 }

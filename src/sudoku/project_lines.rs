@@ -14,9 +14,9 @@ will become
 ---|123|456
 6--|---|---
 ---|---|---
-	^^^
-	In one of those there must be a 6
-	
+    ^^^
+    In one of those there must be a 6
+    
 */
 
 use super::Sudoku;
@@ -27,18 +27,18 @@ pub trait ProjectLines {
 }
 
 impl ProjectLines for Sudoku {
-	// Checks each square to see if it contains any lines that can be projected
-	fn project_lines(&mut self) -> bool {
-		let mut progress = false;
-	
-		for x in 0..3 {
-			for y in 0..3 {
-				progress = check_square(self, x * 3, y * 3) || progress;
-			}
-		}
-		
-		progress
-	}
+    // Checks each square to see if it contains any lines that can be projected
+    fn project_lines(&mut self) -> bool {
+        let mut progress = false;
+    
+        for x in 0..3 {
+            for y in 0..3 {
+                progress = check_square(self, x * 3, y * 3) || progress;
+            }
+        }
+        
+        progress
+    }
 }
 
 // Check a single square to see if it contains any lines that can be projected
@@ -67,7 +67,7 @@ fn check_square(sudoku: &mut Sudoku, corner_x: usize, corner_y: usize) -> bool {
 
 // Get the set of possible numbers in the given horizontal line, within the square
 // and take the difference with the rest of the square
-fn get_h_difference(sudoku: &mut Sudoku, corner_x: usize, y: usize) -> Vec<usize> {		
+fn get_h_difference(sudoku: &mut Sudoku, corner_x: usize, y: usize) -> Vec<usize> {        
     // Set of possible numbers in given line
     let mut possible_numbers = HashSet::<usize>::new();
     for i in 0..3 {

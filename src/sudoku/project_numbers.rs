@@ -37,26 +37,26 @@ pub trait ProjectNumbers {
 }
 
 impl ProjectNumbers for Sudoku {
-	// Projects all fields that are not empty and haven't yet been projected
-	fn project_numbers(&mut self) -> bool {
-		let mut progress = false;
+    // Projects all fields that are not empty and haven't yet been projected
+    fn project_numbers(&mut self) -> bool {
+        let mut progress = false;
 
-		for x in 0..9 {
-			for y in 0..9 {
-				if !self.get(x, y).projected && self.get(x, y).number_found() {
-					progress = self.project_number(x, y) || progress;
-				}
-			}
-		}
+        for x in 0..9 {
+            for y in 0..9 {
+                if !self.get(x, y).projected && self.get(x, y).number_found() {
+                    progress = self.project_number(x, y) || progress;
+                }
+            }
+        }
 
-		progress
-	}
+        progress
+    }
 
-	// Will return true if we make progress so we can know if we are stuck
-	fn project_number(&mut self, x: usize, y: usize) -> bool {
-		self.get_mut(x, y).projected = true;
-		project_h(self, x, y) | project_v(self, x, y) | project_square(self, x, y)
-	}
+    // Will return true if we make progress so we can know if we are stuck
+    fn project_number(&mut self, x: usize, y: usize) -> bool {
+        self.get_mut(x, y).projected = true;
+        project_h(self, x, y) | project_v(self, x, y) | project_square(self, x, y)
+    }
 }
 
 // Project the number in its horizontal line
