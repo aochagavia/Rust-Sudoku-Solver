@@ -1,16 +1,18 @@
-extern crate test;
-extern crate collections;
+#![feature(test)]
 
-use sudoku::Sudoku;
+extern crate test;
+
+use sudoku::{Sudoku, BruteForce};
 use self::test::Bencher;
-use std::io::{File, BufferedReader};
+use std::fs::File;
+use std::io::BufReader;
 
 mod sudoku;
 
 #[bench]
 fn bench_solve_wicked(b: &mut Bencher) {
-    let file = File::open(&Path::new("../samples/wicked.txt")).unwrap();
-    let original = Sudoku::new(BufferedReader::new(file));
+    let file = File::open("../samples/wicked.txt").unwrap();
+    let original = Sudoku::new(BufReader::new(file));
 
     // We measure the time needed to solve the sudoku
     b.iter(|| {
