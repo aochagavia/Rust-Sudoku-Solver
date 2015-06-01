@@ -17,14 +17,14 @@ use std::iter;
 use self::field::Field;
 pub use self::brute_force::BruteForce;
 use self::detect_uniques::DetectUniques;
-use self::project_numbers::ProjectNumbers;
 use self::project_lines::ProjectLines;
+use self::project_numbers::ProjectNumbers;
 
 mod field;
 pub mod brute_force;
 mod detect_uniques;
-mod project_numbers;
 mod project_lines;
+mod project_numbers;
 
 // Sudoku
 #[derive(Clone)]
@@ -39,10 +39,9 @@ impl Sudoku {
         let mut rows = vec![column; 9];
 
         // Read a row per line
-        
         for (y, line) in reader.lines().take(9).enumerate() {
             let line = line.ok().unwrap_or("".to_string());
-            let numbers = line.trim_right().chars().collect::<Vec<char>>();
+            let numbers: Vec<char> = line.trim_right().chars().collect();
 
             if numbers.len() < 9 {
                 panic!("Invalid sudoku file! Line: {}", line.trim_right());
@@ -50,8 +49,8 @@ impl Sudoku {
 
             // Values that cannot be parsed are interpreted as empty fields
             for x in 0..9 {;
-                if let Some(i) = numbers[x].to_string().parse().ok() {
-                    rows[x][y].set_number(i);
+                if let Some(i) = numbers[x].to_digit(10) {
+                    rows[x][y].set_number(i as u8);
                 }
             }
         }
@@ -79,22 +78,22 @@ impl Sudoku {
     }
 
     // Returns the top-left corner of the square in which the given point is
-    pub fn get_corner(x: usize, y: usize) -> (usize, usize) {
+    pub fn get_corner(x: u8, y: u8) -> (u8, u8) {
         assert!(x < 9 && y < 9);
         ((x / 3) * 3, (y / 3) * 3)
     }
 
-    pub fn get(&self, x: usize, y: usize) -> &Field {
-        &self.fields[x][y]
+    pub fn get(&self, x: u8, y: u8) -> &Field {
+        &self.fields[x as usize][y as usize]
     }
 
-    pub fn get_mut(&mut self, x: usize, y: usize) -> &mut Field {
-        &mut self.fields[x][y]
+    pub fn get_mut(&mut self, x: u8, y: u8) -> &mut Field {
+        &mut self.fields[x as usize][y as usize]
     }
 
     // Check that the number in the given coordinates does not break
     // the sudoku condition
-    fn is_valid(&self, x: usize, y: usize) -> bool {
+    fn is_valid(&self, x: u8, y: u8) -> bool {
         let number = self.get(x, y).get_number();
 
         // Check horizontal line

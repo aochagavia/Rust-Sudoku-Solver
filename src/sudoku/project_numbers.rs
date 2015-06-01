@@ -33,7 +33,7 @@ use super::Sudoku;
 
 pub trait ProjectNumbers {
     fn project_numbers(&mut self) -> bool;
-    fn project_number(&mut self, x: usize, y: usize) -> bool;
+    fn project_number(&mut self, x: u8, y: u8) -> bool;
 }
 
 impl ProjectNumbers for Sudoku {
@@ -53,14 +53,14 @@ impl ProjectNumbers for Sudoku {
     }
 
     // Will return true if we make progress so we can know if we are stuck
-    fn project_number(&mut self, x: usize, y: usize) -> bool {
+    fn project_number(&mut self, x: u8, y: u8) -> bool {
         self.get_mut(x, y).projected = true;
         project_h(self, x, y) | project_v(self, x, y) | project_square(self, x, y)
     }
 }
 
 // Project the number in its horizontal line
-fn project_h(sudoku: &mut Sudoku, x: usize, y: usize) -> bool {
+fn project_h(sudoku: &mut Sudoku, x: u8, y: u8) -> bool {
     let num = sudoku.get(x, y).get_number();
     let mut progress = false;
     for i in 0..9 {
@@ -71,7 +71,7 @@ fn project_h(sudoku: &mut Sudoku, x: usize, y: usize) -> bool {
 }
 
 // Project the number in its vertical line
-fn project_v(sudoku: &mut Sudoku, x: usize, y: usize) -> bool {
+fn project_v(sudoku: &mut Sudoku, x: u8, y: u8) -> bool {
     let num = sudoku.get(x, y).get_number();
     let mut progress = false;
     for i in 0..9 {
@@ -82,7 +82,7 @@ fn project_v(sudoku: &mut Sudoku, x: usize, y: usize) -> bool {
 }
 
 // Project the number in its square
-fn project_square(sudoku: &mut Sudoku, x: usize, y: usize) -> bool {
+fn project_square(sudoku: &mut Sudoku, x: u8, y: u8) -> bool {
     let num = sudoku.get(x, y).get_number();
     let mut progress = false;
 

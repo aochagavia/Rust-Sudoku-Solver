@@ -16,7 +16,7 @@ The steps are the following:
 
 use super::Sudoku;
 
-struct Point(usize, usize);
+struct Point(u8, u8);
 
 pub trait BruteForce {
     fn brute_force(&mut self) -> bool;
