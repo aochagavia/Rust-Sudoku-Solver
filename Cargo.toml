@@ -1,6 +1,10 @@
 [package]
 
 name = "ssolver"
+license = "MIT"
+repository = "https://github.com/aochagavia/sudoku"
 version = "0.0.1"
 authors = ["Adolfo Ochagavía <aochagavia92@gmail.com>"]
 
+[dependencies]
+sudoku = "*"
